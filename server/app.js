@@ -67,7 +67,26 @@ app.use(cors({
 }));
 // app.use('/',adminRoute);
 // app.use('products',productRoute);
+app.post('/upload',(req,res)=>{
+    upload(req,res,(err)=>{
+        if(err){
+            res.render('index',{
+            msg : err
+            })
+        } if(req.file==undefined){
+            res.render('index',{
+                msg : 'No file attached'
+            })
+        }else{
+                console.log(req.file);
+                res.render('index',{
+                    msg : 'File uploaded Successfully',
+                    file : `uploads/${req.file.filename}`
+                })
+        }
 
+    })
+})
 
 var port =process.env.PORT || 1234;
 app.listen(port,()=>{
