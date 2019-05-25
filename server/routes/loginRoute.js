@@ -10,7 +10,7 @@ loginRoute.post('/login',(request,response)=>{
  
 loginRoute.post('/register',(request,response)=>{
     console.log('inside the register route...');
-    loginOperations.registerUser(request,response);
+    loginOperations.registerUser(request.body.userObject,request,response);
 });
 
 

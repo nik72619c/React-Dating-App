@@ -66,14 +66,13 @@ export class Register extends React.Component{
                     alert('some error occured while registering you..');
                 }
 
-                else if(data.isExists==true){
-                    alert('this user already exists..please try with another email...');
-                }
+                // else if(data.isExists==true){
+                //     alert('this user already exists..please try with another email...');
+                // }
 
                 else{
-                    localStorage.setItem('sessionId', data.token);
-                this.props.history.push('/student/dashboard');
-                alert('logged in successfully...');
+                // this.props.history.push('/student/dashboard');
+                alert('registered successfully...');
                 }
             })
 
@@ -98,7 +97,7 @@ export class Register extends React.Component{
                    
                     <div className="row">
                         <div className="col-md-12">
-                            <input type="text" name="firstname" className="form-control input-lg" placeholder="Enter your name" onChange={this.handleInputChange} value={this.state.firstname} />                        </div>
+                            <input type="text" name="name" className="form-control input-lg" placeholder="Enter your name" onChange={this.handleInputChange} value={this.state.name} />                        </div>
                     </div>
 
                     <input type="text" name="email" className="form-control input-lg" placeholder="Your Email" onChange={this.handleInputChange} value={this.state.email}/>

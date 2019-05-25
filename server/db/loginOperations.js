@@ -38,13 +38,14 @@ const loginOperations={
             }
         })
     },
-    registerUser: function (request, response){
-
+    registerUser: function (userObject,request, response){
+        console.log('register userObject', userObject);
         let user=new User({
-            name: 'nikhil sharma',
-            gender: 'male',
-            email: 'nikhilsharmarockstar21@gmail.com',
-            password: 'nikhil123',
+            name: userObject.name,
+            gender: userObject.gender,
+            email: userObject.email,
+            password: userObject.password,
+            profile_image_url: 'https://cdn.pixabay.com/photo/2018/02/08/22/27/flower-3140492_960_720.jpg'
         });
         console.log('creating user for saving');
         user.save(err=>{
