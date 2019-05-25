@@ -1,10 +1,11 @@
 const User=require('./schema/userSchema');
+const jwt=require('jsonwebtoken');
 const loginOperations={
     fetchUser(userObject,request,response){
 
         console.log('userObject received at fetchUser function', userObject);
 
-        Users.find({"email":userObject.email,"password":userObject.password},(err,content)=>{
+        User.find({"email":userObject.email,"password":userObject.password},(err,content)=>{
 
             console.log('making the query for login...');
             if(err){
@@ -34,6 +35,31 @@ const loginOperations={
                     responseText: 'some error occured while loggin you in !'
                 })
 
+            }
+        })
+    },
+    registerUser: function (request, response){
+
+        let user=new User({
+            name: 'nikhil sharma',
+            gender: 'male',
+            email: 'nikhilsharmarockstar21@gmail.com',
+            password: 'nikhil123',
+        });
+        console.log('creating user for saving');
+        user.save(err=>{
+            console.log('saving user');
+            if(err){
+                response.json({
+                    status: 404,
+                    responseText: 'could not register user'
+                })
+            }
+            else{
+                response.json({
+                    status: 200,
+                    responseText: 'successfully registered user...'
+                })
             }
         })
     }

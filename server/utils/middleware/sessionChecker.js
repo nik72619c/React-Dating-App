@@ -15,7 +15,7 @@ var verifyToken=function (request,response,next){
             }
             else if(authData){
                 request.authData=authData;
-                response.locals.token=authData;
+                request.email=authData.email;
                 next();
             }
         });

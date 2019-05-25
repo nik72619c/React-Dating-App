@@ -3,7 +3,7 @@ const jwt=require('jsonwebtoken');
 var userOperations={
     likeUser: function (request,response){
         let email=request.body.email;
-        let userEmail=request.locals.token.email;
+        let userEmail=request.email;
         console.log('token received from middleware', userEmail);
         Users.findOneAndUpdate({email: userEmail}, {$push: {liked: email}},(err,content)=>{
             if(err){
