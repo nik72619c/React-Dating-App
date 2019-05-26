@@ -27,7 +27,7 @@ export class Login extends React.Component{
 
                else if(data.content){
                 localStorage.setItem('token', data.token);
-                
+                this.props.history.push('/dashboard');
                 alert('logged in successfully...');
                }
               

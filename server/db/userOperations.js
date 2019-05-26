@@ -58,6 +58,32 @@ var userOperations={
                 })
             }
         });
+    },
+    getUsers: function (request, response){
+        console.log('inside getUsers function in useroperations');
+        Users.find({}, (err, content)=>{
+            if(err){
+                console.log('error occured in finding users..');
+                response.json({
+                    err: err
+                })
+            }
+
+            else if(content && content.length>0){
+                console.log('retreived users');
+                response.json({
+                    status: 200,
+                    content: content
+                })
+            }
+            else {
+                console.log('some other error occured in finding users..');
+                response.json({
+                    status: 404,
+                    responseText: 'some other error occured in finding users'
+                })
+            }
+        })
     }
     
 };

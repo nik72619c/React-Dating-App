@@ -1,5 +1,6 @@
 import React from 'react';
 import './register.css';
+import UploadImage from '../uploadImage/uploadImage';
 
 //made a controlled component to handle form inputs
 export class Register extends React.Component{
@@ -7,8 +8,21 @@ export class Register extends React.Component{
     constructor(props){
         super(props);
         this.handleInputChange=this.handleInputChange.bind(this);
+        this.getImageUrl=this.getImageUrl.bind(this);
         this.isFormFilled=true;
-        this.state={};
+        this.state={
+            url: ''
+        };
+    }
+    componentDidMount(){
+        this.state.url='';
+    }
+
+    getImageUrl(url){
+        this.setState({
+            url: url
+        })
+        console.log('got url', this.state.url);
     }
 
     goToLogin(){
@@ -56,6 +70,7 @@ export class Register extends React.Component{
     // }
 
     //making http call directly without authenticating on frontend for now
+    else{
     fetch('http://localhost:1234/api/register',{
                 method:'POST',
                 headers: {'Content-Type':'application/json'},
@@ -76,6 +91,8 @@ export class Register extends React.Component{
                 }
             })
 
+        }
+
     }
 
     handleInputChange(event) {
@@ -93,11 +110,13 @@ export class Register extends React.Component{
             <div className="container" id="wrap">
 	  <div className="row">
         <div className="col-md-6 col-md-offset-3">
-            <form className="form" >   <legend>Sign Up</legend>
+            <form className="form" >   
+            <legend>Sign Up</legend>
                    
                     <div className="row">
                         <div className="col-md-12">
-                            <input type="text" name="name" className="form-control input-lg" placeholder="Enter your name" onChange={this.handleInputChange} value={this.state.name} />                        </div>
+                            <input type="text" name="name" className="form-control input-lg" placeholder="Enter your name" onChange={this.handleInputChange} value={this.state.name} />                        
+                        </div>
                     </div>
 
                     <input type="text" name="email" className="form-control input-lg" placeholder="Your Email" onChange={this.handleInputChange} value={this.state.email}/>
@@ -114,14 +133,17 @@ export class Register extends React.Component{
                     </label>
                     <br />
               <span classNameName="help-block">By clicking Create my account, you agree to our Terms and that you have read our Data Use Policy, including our Cookie Use.</span>
-                    <button className="btn btn-lg btn-primary btn-block signup-btn" type="button" onClick={this.registerUser.bind(this)}>
+
+            </form>          
+          </div>
+</div>    
+<UploadImage email={this.state.email} getImageUrl={this.getImageUrl}/>   
+
+<button className="btn btn-lg btn-primary btn-block signup-btn" type="button" onClick={this.registerUser.bind(this)} disabled={this.state.url==''?true:false}>
                         Create my account</button>
 
                         <button className="btn btn-lg btn-primary btn-block signup-btn" type="button" onClick={this.goToLogin.bind(this)}>
                         Back to Login Page</button>
-            </form>          
-          </div>
-</div>            
 </div>
 
         )

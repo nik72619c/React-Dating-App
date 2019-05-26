@@ -45,7 +45,7 @@ const loginOperations={
             gender: userObject.gender,
             email: userObject.email,
             password: userObject.password,
-            profile_image_url: 'https://cdn.pixabay.com/photo/2018/02/08/22/27/flower-3140492_960_720.jpg'
+            profile_image_url: userObject.url
         });
         console.log('creating user for saving');
         user.save(err=>{

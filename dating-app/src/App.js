@@ -5,6 +5,7 @@ import UserCard from './components/card/UserCard';
 import { Login } from './components/login/login';
 import {Switch, Route} from 'react-router-dom';
 import { Register } from './components/register/register';
+import dashboard from './dashboard/dashboard';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Switch>
         <Route path="/" exact component={Login}/>
         <Route path="/register" exact component={Register}/>
+        <Route path="/dashboard" exact component={dashboard}/>
       </Switch>
     </div>
   );
