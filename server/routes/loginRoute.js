@@ -20,5 +20,22 @@ loginRoute.get('/getUsers', (request, response)=>{
     userOperations.getUsers(request, response);
 });
 
+loginRoute.post('/like', (request, response)=>{
+    console.log('inside /like route');
+    console.log('request.body obtained', request.body);
+    userOperations.likeUser(request, response);
+});
+
+loginRoute.post('/superlike', (request, response)=>{
+    console.log('inside /superlike route');
+    console.log('request.body obtained', request.body);
+    userOperations.superlikeUser(request, response);
+});
+
+loginRoute.post('/block', (request, response)=>{
+    console.log('inside /block route');
+    console.log('request.body obtained', request.body);
+    userOperations.blockUser(request, response);
+});
 
 module.exports=loginRoute;

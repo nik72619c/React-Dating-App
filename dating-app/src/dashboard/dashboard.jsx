@@ -6,9 +6,11 @@ export default class dashboard extends React.Component{
         this.state={
             users: []
         }
+        this.loggedUser={};
     }
 
     componentDidMount(){
+        this.loggedUser=this.props.location.state[0];
         fetch('http://localhost:1234/api/getUsers',{
                 method:'GET',
                 headers: {'Content-Type':'application/json'},
@@ -23,8 +25,8 @@ export default class dashboard extends React.Component{
         return (
             <div>
                {
-                   this.state.users.map(user=>{
-                       return <UserCard user={user}/>
+                   this.state.users.map((user,index)=>{
+                       return <UserCard  key={index} user={user}/>
                    })
                }
             </div>

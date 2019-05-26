@@ -1,5 +1,4 @@
 const Users=require('./schema/userSchema');
-const jwt=require('jsonwebtoken');
 var userOperations={
     likeUser: function (request,response){
         let email=request.body.email;
@@ -23,7 +22,8 @@ var userOperations={
     },
     blockUser: function (request, response){
         let email=request.body.email;
-        Users.findOneAndUpdate({email: email}, {$push: {blocked: email}},(err,content)=>{
+        let userEmail=request.email;
+        Users.findOneAndUpdate({email: userEmail}, {$push: {blocked: email}},(err,content)=>{
             if(err){
                 response.json({
                     err: err,
@@ -41,7 +41,7 @@ var userOperations={
     },
     superlikeUser: function (request,response){
         let email=request.body.email;
-        let userEmail=request.locals.token.email;
+        let userEmail=request.email;
         console.log('token received from middleware', userEmail);
         Users.findOneAndUpdate({email: userEmail}, {$push: {blocked: email}},(err,content)=>{
             if(err){
