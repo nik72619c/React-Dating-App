@@ -1,5 +1,5 @@
 import React from 'react';
-
+import UserCard from '../components/card/UserCard';
 export default class dashboard extends React.Component{
     constructor(props){
         super(props);
@@ -15,13 +15,18 @@ export default class dashboard extends React.Component{
             }).then(response=>response.json()).then(data=>{
                 this.setState({
                     users: data.content
-                })
+                });
+                console.log('users', this.state.users);
             });
     }
     render(){
         return (
             <div>
-                welcome to the dashboard !
+               {
+                   this.state.users.map(user=>{
+                       return <UserCard user={user}/>
+                   })
+               }
             </div>
         )
     }
