@@ -1,16 +1,36 @@
 import React from 'react';
 import UserCard from '../components/card/UserCard';
+import openSocket from 'socket.io-client';
+
 export default class dashboard extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            users: []
+            users: [],
         }
         this.loggedUser={};
+        this.socket={};
     }
 
     componentDidMount(){
         this.loggedUser=this.props.location.state[0];
+        this.socket=openSocket('http://localhost:1234');
+        this.socket.on('connection',()=>{
+            console.log('socket id', this.socket.id);
+            localStorage.setItem('socket', this.socket);
+            this.socket.emit('login',{
+                socketid: this.socket.id,
+                email: this.loggedUser.email
+        });
+            
+        });
+
+        this.socket.on('sendLike',(data)=>{
+            console.log('sendLike event called  on frontend..', data);
+            alert('you have been liked by user');
+        });
+
+
         fetch('http://localhost:1234/api/getUsers',{
                 method:'GET',
                 headers: {'Content-Type':'application/json'},
@@ -26,7 +46,7 @@ export default class dashboard extends React.Component{
             <div>
                {
                    this.state.users.map((user,index)=>{
-                       return <UserCard  key={index} user={user}/>
+                       return <UserCard  key={index} user={user} socket={this.socket} email={this.loggedUser.email}/>
                    })
                }
             </div>

@@ -13,7 +13,6 @@ export class Login extends React.Component{
 
         console.log('userObject', userObject);
         if(userObject.email && userObject.password){
-
             fetch('http://localhost:1234/api/login',{
                 method:'POST',
                 headers: {'Content-Type':'application/json'},
@@ -26,6 +25,7 @@ export class Login extends React.Component{
                 }
 
                else if(data.content){
+              
                 localStorage.setItem('token', data.token);
                 this.props.history.push({
                     pathname: '/dashboard',
@@ -38,7 +38,6 @@ export class Login extends React.Component{
         }
 
         else{
-
             alert('please fill the required credentails...');
         }
     }
@@ -46,33 +45,6 @@ export class Login extends React.Component{
     registerUser(){
         console.log('registerUser Function called...');
         this.props.history.push('/register');
-    }
-
-    loginWithFacebook(){
-        console.log('inside loginWithFacebook');
-        var userObject={
-            email: this.refs.email.value,
-            password: this.refs.password.value
-        }
-
-        console.log('userObject', userObject);
-        if(userObject.email && userObject.password){
-
-            fetch('http://localhost:1234/api/loginWithFacebook',{
-                method:'GET',
-                headers: {'Content-Type':'application/json'},
-                
-            }).then(response=>{response.json();
-            console.log('response', response)}).then(data=>{
-                console.log('data obtained is', data);        
-            
-            }).catch(err=>console.log(err));
-        }
-
-        else{
-
-            alert('please fille the required credentails...');
-        }
     }
 
     render(){

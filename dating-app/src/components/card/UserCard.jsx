@@ -9,7 +9,13 @@ export default class UserCard extends React.Component{
     }
 
     likeUser(){
-      //make axios request to like user with socket.io
+    // console.log('socket recceived via props', this.props.socket.id);
+    console.log('inside likeUser function..');
+    this.props.socket.emit('like', {
+      targetEmail: this.props.user.email,
+      email: this.props.email
+    })
+    console.log('likeUser done');
     }
     blockUser(){
       //make axios request to block user with socket.io
