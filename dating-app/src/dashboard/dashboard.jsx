@@ -42,12 +42,14 @@ export default class dashboard extends React.Component{
             withCredentials: true
             }).then(data=>{
                 console.log('data', data.data);
-                if(data.status==403){
+                if(data.data.status==403){
                     console.log('unauth user, redirecting..');
                     this.props.history.push('/');
                     localStorage.clear();
                 }
                     else{
+                        data.data.content=data.data.content.filter(userObject=>userObject.email!=this.loggedUser.email);
+                        console.log('modified data.data.content', data.data.content);
                         this.setState({
                             users: data.data.content
                         });
