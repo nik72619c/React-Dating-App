@@ -1,7 +1,9 @@
+const jwt=require('jsonwebtoken');
 var verifyToken=function (request,response,next){
     let authHeader=request.headers['authorization'];
+    console.log('authHeader', authHeader);
     if(typeof authHeader!='undefined'){
-
+        console.log('inside sessionChecker middleware');
         let bearer=authHeader.split(' ');
         console.log('bearer', bearer);
         let token=bearer[1];
@@ -9,11 +11,14 @@ var verifyToken=function (request,response,next){
         console.log('token', token);
         request.token=token;
         jwt.verify(request.token,'secretkey',(err,authData)=>{
-            console.log('authData', authData);
+            
             if(err){
-                response.sendStatus(403);
+                response.json({
+                    status: 403
+                });
             }
             else if(authData){
+                console.log('authorised');
                 request.authData=authData;
                 request.email=authData.email;
                 next();
@@ -22,8 +27,10 @@ var verifyToken=function (request,response,next){
     }
 
    else {
-
-    response.sendStatus(403);
+    console.log('not authorised');
+    response.json({
+        status: 403
+    })
     }
 }
 

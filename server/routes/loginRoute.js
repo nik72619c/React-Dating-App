@@ -2,7 +2,7 @@ const express=require('express');
 const loginRoute=express.Router();
 const loginOperations=require('../db/loginOperations');
 const userOperations= require('../db/userOperations');
-
+const sessionChecker=require('../utils/middleware/sessionChecker');
 
 loginRoute.post('/login',(request,response)=>{
 
@@ -15,7 +15,7 @@ loginRoute.post('/register',(request,response)=>{
     loginOperations.registerUser(request.body.userObject,request,response);
 });
 
-loginRoute.get('/getUsers', (request, response)=>{
+loginRoute.get('/getUsers',sessionChecker, (request, response)=>{
     console.log('inside getusers route...');
     userOperations.getUsers(request, response);
 });
