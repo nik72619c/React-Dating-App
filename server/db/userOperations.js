@@ -34,23 +34,18 @@ var userOperations={
             }
         });
     },
-    superlikeUser: function (request,response){
-        let email=request.body.email;
-        let userEmail=request.email;
-        console.log('token received from middleware', userEmail);
-        Users.findOneAndUpdate({email: userEmail}, {$push: {blocked: email}},(err,content)=>{
+    superlikeUser: function (userObject, cb){
+        let targetEmail=userObject.targetEmail;
+        let email=userObject.email;
+        // console.log('token received from middleware', userEmail);
+        Users.findOneAndUpdate({email: email}, {$push: {superliked: targetEmail}},(err,content)=>{
             if(err){
-                response.json({
-                    err: err,
-                    status: 404
-                })
+                console.log('error occured...');
             }
 
             else{
-                response.json({
-                    status: 200,
-                    message: 'user blocked successfully...'
-                })
+                console.log('the superlike userOperation performed successfully..');
+                cb(content);
             }
         });
     },

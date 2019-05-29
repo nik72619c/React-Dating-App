@@ -76,6 +76,29 @@ io.on('connection',(socket)=>{
 
     });
   })
+  //io logic for superlike
+  socket.on('superlike',(userObject)=>{
+    console.log('inside like socket event at the server and userObject is', userObject);
+    userOperations.superlikeUser(userObject,(userData)=>{
+      //write the notif callback logic for sending
+      console.log('superlikeUser done and data received is ', userData);
+      let socketid;
+      console.log('connected array is', connected);
+      for(let i=0;i<connected.length;i++){
+        console.log('connected email '+ connected[i].email +' and userObject email '+ userObject.targetEmail);
+        if(connected[i].email==userObject.targetEmail){
+          console.log('inside if.. and socketid is', connected[i].socketid);
+          socket=connected[i].socketid;
+          console.log('running cb and socketid is', socketid);
+          io.to(connected[i].socketid).emit('sendSuperlike',{
+            message: 'you were superliked by'+userObject.email,
+            url: userData.profile_image_url
+          });
+        }
+      }
+
+    });
+  })
 });
 var port =process.env.PORT || 1234;
 http.listen(port,()=>{
