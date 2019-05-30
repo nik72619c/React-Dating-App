@@ -3,6 +3,8 @@ import UserCard from '../components/card/UserCard';
 import openSocket from 'socket.io-client';
 import Axios from 'axios';
 import Modal from 'react-awesome-modal';
+import './dashboard.css';
+import Navbar from '../components/navbar/navbar';
 
 export default class dashboard extends React.Component{
     constructor(props){
@@ -11,9 +13,11 @@ export default class dashboard extends React.Component{
             users: [],
             visible : false,
             message: '',
-            url: ''
+            url: '',
+            loggedUser:{},
+            blocked: []
         }
-        this.loggedUser={};
+        this.loggedUser={blocked: []};
         this.socket={};
     }
 
@@ -33,13 +37,17 @@ export default class dashboard extends React.Component{
 
     componentDidMount(){
         this.loggedUser=this.props.location.state[0];
+        this.setState({
+            loggedUser: this.loggedUser
+        })
+        console.log('loggedUser', this.loggedUser);
         this.socket=openSocket('http://localhost:1234');
         this.socket.on('connection',()=>{
             console.log('socket id', this.socket.id);
             localStorage.setItem('socket', this.socket);
             this.socket.emit('login',{
                 socketid: this.socket.id,
-                email: this.loggedUser.email
+                email: this.state.loggedUser.email
         });
             
         });
@@ -48,7 +56,8 @@ export default class dashboard extends React.Component{
             console.log('sendLike event called  on frontend..', data);
             
             this.setState({
-                message: data.message
+                message: data.message,
+                url: ''
             });
             this.openModal();
         });
@@ -61,6 +70,17 @@ export default class dashboard extends React.Component{
             });
             this.openModal();
         });
+
+        this.socket.on('sendBlock',(data)=>{
+            console.log('sendBlock event called  on frontend..', data);
+            this.loggedUser.blocked.push(data.blockedEmail);
+            this.setState({
+                message: data.message,
+                loggedUser: this.loggedUser
+            });
+            this.openModal();
+        });
+        
 
 
     Axios('http://localhost:1234/api/getUsers',{
@@ -81,8 +101,13 @@ export default class dashboard extends React.Component{
                     else{
                         data.data.content=data.data.content.filter(userObject=>userObject.email!=this.loggedUser.email);
                         console.log('modified data.data.content', data.data.content);
+                        data.data.content.forEach(user=>{
+                                    
+                        });
+                        console.log('bloked array', this.state.blocked);
                         this.setState({
-                            users: data.data.content
+                            users: data.data.content,
+                            blocked: this.state.blocked
                         });
                         console.log('users', this.state.users);
       
@@ -92,23 +117,22 @@ export default class dashboard extends React.Component{
     render(){
         return (
             <div>
+                <Navbar {...this.props}/>
                {
                    this.state.users.length!=0?(this.state.users.map((user,index)=>{
-                       return <UserCard  key={index} user={user} socket={this.socket} email={this.loggedUser.email}/>
+                       return <UserCard  key={index} user={user} socket={this.socket} email={this.loggedUser.email} loggedUser={this.state.loggedUser} src={this.state.loggedUser.blocked.indexOf(user.email)>=0?'' : user.profile_image_url}/>
                    })): <div>loading content....</div>
                }
-                <section className="mx-auto my-auto">
-                    <div className="container mx-auto my-auto pl-4">
-                <input type="button" value="Open" onClick={() => this.openModal()} />
-                <Modal visible={this.state.visible} width="700" height="auto" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                <section className="mx-auto my-auto" >
+                <Modal visible={this.state.visible} width="800" height="auto" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div>
                         <h1 className="text-white">{this.state.message}</h1>
-                       {this.state.url!==''?<img src={this.state.url} style={{width: '50%',height: '50%',borderRadius: '50%'}} className="mx-auto" alt=""/>: <span></span>}
+                       {this.state.url!==''?<img src={this.state.url}  style={{width: '20%',height: '20%',borderRadius: '50%'
+                        }} className="image mx-auto" alt=""/>: <span></span>}
                        <br/><br/>
                         <a href="javascript:void(0);" onClick={() => this.closeModal()}>Close</a>
                     </div>
                 </Modal>
-                </div>
             </section>
             </div>
         )

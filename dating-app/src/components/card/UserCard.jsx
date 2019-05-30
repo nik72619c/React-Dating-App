@@ -19,10 +19,17 @@ export default class UserCard extends React.Component{
     }
     blockUser(){
       //make axios request to block user with socket.io
+      console.log('inside blockUser function..');
+      this.props.socket.emit('block', {
+        targetEmail: this.props.user.email,
+        email: this.props.email
+      })
+      console.log('blockUser done');
+      
     }
     superlikeUser(){
       //make axios request to superlike user with socket.io
-          // console.log('socket recceived via props', this.props.socket.id);
+      // console.log('socket recceived via props', this.props.socket.id);
     console.log('inside superlikeUser function..');
     this.props.socket.emit('superlike', {
       targetEmail: this.props.user.email,
@@ -30,11 +37,11 @@ export default class UserCard extends React.Component{
     })
     console.log('superlikeUser done');
     }
-    
+    //'https://commons.wikimedia.org/wiki/File:Default-welcomer.png'
     render(){
         return (
 <div className="card mb-2" style={{width: '20rem'}}>
-  <img className="card-img-top" src={this.props.user.profile_image_url ||  'https://commons.wikimedia.org/wiki/File:Default-welcomer.png'} alt="Card"/>
+  <img className="card-img-top" src={this.props.src} alt="Card"/>
   <div className="card-body">
     <p className="card-text">{this.props.user.name}</p>
     <p>Gender: {this.props.user.gender}</p>

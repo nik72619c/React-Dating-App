@@ -69,7 +69,7 @@ io.on('connection',(socket)=>{
           socket=connected[i].socketid;
           console.log('running cb and socketid is', socketid);
           io.to(connected[i].socketid).emit('sendLike',{
-            message: 'you were liked by'+userObject.email
+            message: 'you were liked by '+userObject.email
           });
         }
       }
@@ -91,9 +91,32 @@ io.on('connection',(socket)=>{
           socket=connected[i].socketid;
           console.log('running cb and socketid is', socketid);
           io.to(connected[i].socketid).emit('sendSuperlike',{
-            message: 'you were superliked by'+userObject.email,
+            message: 'you were superliked by '+userObject.email,
             url: userData.profile_image_url
           });
+        }
+      }
+
+    });
+  })
+  //logic for block user
+  socket.on('block', (userObject)=>{
+    console.log('inside like socket event at the server and userObject is', userObject);
+    userOperations.blockUser(userObject,()=>{
+      //write the notif callback logic for sending
+      let socketid;
+      console.log('connected array is', connected);
+      for(let i=0;i<connected.length;i++){
+        console.log('connected email '+ connected[i].email +' and userObject email '+ userObject.targetEmail);
+        if(connected[i].email==userObject.email){
+          console.log('inside if.. and socketid is', connected[i].socketid);
+          socket=connected[i].socketid;
+          console.log('running cb and socketid is', connected[i].socketid);
+          io.to(connected[i].socketid).emit('sendBlock',{
+            message: 'you were blocked by '+userObject.email,
+            blockedEmail: userObject.targetEmail
+          });
+          console.log('after sending sendBlock..');
         }
       }
 
