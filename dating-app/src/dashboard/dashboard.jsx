@@ -78,7 +78,7 @@ export default class dashboard extends React.Component{
                 message: data.message,
                 loggedUser: this.loggedUser
             });
-            this.openModal();
+
         });
         
 
@@ -99,6 +99,12 @@ export default class dashboard extends React.Component{
                     localStorage.clear();
                 }
                     else{
+                        this.loggedUser=data.data.content.filter(user=>this.state.loggedUser.email===user.email)[0];
+                        console.log('updated loggedUser details', this.loggedUser);
+                        this.setState({
+                            loggedUser: this.loggedUser
+                        });
+
                         data.data.content=data.data.content.filter(userObject=>userObject.email!=this.loggedUser.email);
                         console.log('modified data.data.content', data.data.content);
                         data.data.content.forEach(user=>{
