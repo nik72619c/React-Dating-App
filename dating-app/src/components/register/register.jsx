@@ -44,6 +44,14 @@ export class Register extends React.Component{
         if(Object.keys(this.state).length === 0 && this.state.constructor === Object){
             alert('please fill all the credentials properly..');
         }
+        else if(this.state.password !=this.state.confirm_password){
+            alert('the passwords donot match..');
+        }
+        else if(Object.keys(this.state).length <=5){
+            alert('please fill all the deatils..');
+        }
+
+        
 
             // for(let key in this.state){
             //     if(this.state[key]==""){

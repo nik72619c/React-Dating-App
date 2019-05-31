@@ -34,6 +34,7 @@ app.post('/upload', multipartMiddleware, (req, res) => {
       result
     ) {
       if (error) {
+        console.log('error saving image..',error);
         return res.status(500).send(error);
       }
       // Save image to database
@@ -47,6 +48,7 @@ app.post('/upload', multipartMiddleware, (req, res) => {
 app.use('/api',loginRoute);
 //code for listening and acting to sockets
 let connected=module.exports.connected=[];
+var found=false;
 io.on('connection',(socket)=>{
   console.log('user connected...');
   socket.emit('connection');

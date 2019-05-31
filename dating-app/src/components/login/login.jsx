@@ -52,11 +52,11 @@ export class Login extends React.Component{
 
             <div id="LoginForm">
             <div className="container">
-<h1 className="form-heading">login Form</h1>
+<h1 className="form-heading">The Online Dating App</h1>
 <div className="login-form">
 <div className="main-div">
     <div className="panel">
-   <h2>Student Login Page !</h2>
+   <h2>Welcome to the Login Page !</h2>
    <p>Please enter your username and password</p>
    </div>
     <form id="Login">

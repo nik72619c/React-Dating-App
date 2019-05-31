@@ -48,7 +48,7 @@ import Spinner from 'react-spinkit';
         url: data.message.url
       });
       this.props.getImageUrl(this.state.url);
-    });
+    }).catch(err=>alert('some error occured in uploading your image!'));
   };
 
   render() {

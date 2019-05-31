@@ -42,6 +42,7 @@ export default class dashboard extends React.Component{
         })
         console.log('loggedUser', this.loggedUser);
         this.socket=openSocket('http://localhost:1234');
+        console.log('socket id test', this.socket.id);
         this.socket.on('connection',()=>{
             console.log('socket id', this.socket.id);
             localStorage.setItem('socket', this.socket);
@@ -126,7 +127,7 @@ export default class dashboard extends React.Component{
                 <Navbar {...this.props}/>
                {
                    this.state.users.length!=0?(this.state.users.map((user,index)=>{
-                       return <UserCard  key={index} user={user} socket={this.socket} email={this.loggedUser.email} loggedUser={this.state.loggedUser} src={this.state.loggedUser.blocked.indexOf(user.email)>=0?'' : user.profile_image_url}/>
+                       return <UserCard  key={index} user={user} socket={this.socket} email={this.loggedUser.email} loggedUser={this.state.loggedUser} src={this.state.loggedUser.blocked.indexOf(user.email)>=0?'https://cdn0.iconfinder.com/data/icons/users-2/512/e27-512.png' : user.profile_image_url}/>
                    })): <div>loading content....</div>
                }
                 <section className="mx-auto my-auto" >
